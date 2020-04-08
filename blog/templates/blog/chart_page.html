@@ -106,14 +106,24 @@
             $.get(csvfile, readCsv, 'text');
         });
     </script>
-    <link rel='stylesheet' href='list.css'>
+    <script>
+        let fileInput = document.getElementById('file');
+        let fileReader = new FileReader();
+            fileInput.onchange = () => {
+        let file = fileInput.files[0];
+        fileReader.readAsText(file);
+        };
 
-    
+        fileReader.onload = () => console.log(fileReader.result);
+    </script>
+
+   
     <!-- HTML -->
     <div id="chartdiv"></div>
 
 
     <body>
+    <!--
         <table>
             <caption>紫陽花の名所</caption>
             <thead>
@@ -121,5 +131,78 @@
             </thead>
             <tbody id='csv-body' />
         </table>
+            <input type="file" id="file">
+    -->
     </body>
+
+
+    
+    
+    <form name="myform">
+        <input name="myfile" type="file" />
+        <textarea name="output" cols="80" rows="10"></textarea>
+    </form>
+      
+      <script>
+        
+        //Form要素を取得する
+        var form = document.forms.myform;
+        var toString = Object.prototype.toString
+        
+        //ファイルが読み込まれた時の処理
+        form.myfile.addEventListener('change', function(e) {
+          
+          //ここにファイル取得処理を書く
+          var result = e.target.files[0];
+ 
+          console.log( result );
+          //FileReaderのインスタンスを作成する
+    
+          var reader = new FileReader();
+  
+          //読み込んだファイルの中身を取得する
+          reader.readAsText( result );
+          console.log("test:reader")
+          console.log(reader)
+          console.log("test:result")
+          console.log(reader.result)
+
+          //ファイルの中身を取得後に処理を行う
+          reader.addEventListener( 'load', function() {
+  
+            //ファイルの中身をtextarea内に表示する
+            form.output.textContent = reader.result;
+            //console.log( reader.result.split('\n') ); 
+            console.log("reader.result[0]")
+
+            console.log(reader.result[0])
+            console.log("reader.result")
+
+            console.log(reader.result)
+          
+            console.log(typeof reader.result)
+            ar = reader.result.split('\n')
+            //ar_1 = ar.split(',')
+            //console.log(ar)
+            //console.log(typeof ar)
+            //console.log(ar[0])
+            console.log("Object")
+            ar_ob = Object.values(ar)
+            console.log(ar_ob);
+            console.log(typeof ar_ob)
+            console.log(toString.call(ar_ob))
+            var lineArr = reader.result.split("\n");           
+            //行と列の二次元配列にする
+            var itemArr = [];
+            for (var i = 0; i < lineArr.length; i++) {
+              itemArr[i] = lineArr[i].split(",");
+            }
+           console.log( itemArr ); // chromoの右上アイコン→その他のツール→ディベロッパーツール→Consoleに出力される
+          //console.log(ar_1)
+          })
+          
+        })
+      </script>
+
+
     </html>
